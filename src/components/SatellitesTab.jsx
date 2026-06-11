@@ -8,19 +8,24 @@ const EVENTS = [
 ];
 
 export default function SatellitesTab({ data, updateData }) {
+  const satellites = data?.tasks?.satellites || {};
+
   const toggleTask = (eventKey, taskId) => {
-    updateData(prev => ({
-      ...prev,
-      tasks: {
-        ...prev.tasks,
-        satellites: {
-          ...prev.tasks.satellites,
-          [eventKey]: prev.tasks.satellites[eventKey].map(t =>
-            t.id === taskId ? { ...t, done: !t.done } : t
-          ),
+    updateData(prev => {
+      const prevSatellites = prev.tasks?.satellites || {};
+      return {
+        ...prev,
+        tasks: {
+          ...prev.tasks,
+          satellites: {
+            ...prevSatellites,
+            [eventKey]: (prevSatellites[eventKey] || []).map(t =>
+              t.id === taskId ? { ...t, done: !t.done } : t
+            ),
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   return (
@@ -34,7 +39,7 @@ export default function SatellitesTab({ data, updateData }) {
             <div className="event-card-title">{event.title}</div>
             <div className="event-card-when">{event.when}</div>
             <div className="event-tasks">
-              {data.tasks.satellites[event.key]?.map(task => (
+              {(satellites[event.key] || []).map(task => (
                 <div
                   key={task.id}
                   className={`event-task ${task.done ? 'done' : ''}`}

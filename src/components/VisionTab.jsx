@@ -12,7 +12,8 @@ export default function VisionTab({ data, updateData }) {
   const [modal, setModal] = useState(null);
   const [modalData, setModalData] = useState({});
 
-  const activeVision = data.visions.find(v => v.id === data.activeVisionId) || data.visions[0];
+  const visions = data?.visions || [];
+  const activeVision = visions.find(v => v.id === data?.activeVisionId) || visions[0];
 
   const switchVision = (id) => {
     updateData(prev => ({ ...prev, activeVisionId: id }));
@@ -43,7 +44,7 @@ export default function VisionTab({ data, updateData }) {
   };
 
   const renameVision = (id) => {
-    const vision = data.visions.find(v => v.id === id);
+    const vision = visions.find(v => v.id === id);
     if (!vision) return;
     setModal('renameVision');
     setModalData({ id, name: vision.name });
@@ -61,7 +62,7 @@ export default function VisionTab({ data, updateData }) {
   };
 
   const deleteVision = (id) => {
-    if (data.visions.length <= 1) return;
+    if (visions.length <= 1) return;
     if (!confirm('Delete this vision concept?')) return;
     updateData(prev => {
       const newVisions = prev.visions.filter(v => v.id !== id);
@@ -166,7 +167,7 @@ export default function VisionTab({ data, updateData }) {
       </div>
 
       <div className="vision-tab-bar">
-        {data.visions.map(vision => (
+        {visions.map(vision => (
           <button
             key={vision.id}
             className={`vision-concept-tab ${vision.id === data.activeVisionId ? 'active' : ''}`}
@@ -174,7 +175,7 @@ export default function VisionTab({ data, updateData }) {
           >
             <span>{vision.name}</span>
             <button className="vtab-btn" onClick={(e) => { e.stopPropagation(); renameVision(vision.id); }} title="Rename">✎</button>
-            {data.visions.length > 1 && (
+            {visions.length > 1 && (
               <button className="vtab-btn" onClick={(e) => { e.stopPropagation(); deleteVision(vision.id); }} title="Delete">✕</button>
             )}
           </button>

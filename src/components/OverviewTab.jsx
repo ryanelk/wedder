@@ -1,12 +1,15 @@
 import { Task, Alert } from './shared.jsx';
 
 export default function OverviewTab({ data, updateData }) {
+  const tasks = data?.tasks?.overview || [];
+  const budget = data?.budget || [];
+
   const toggleTask = (taskId) => {
     updateData(prev => ({
       ...prev,
       tasks: {
         ...prev.tasks,
-        overview: prev.tasks.overview.map(t =>
+        overview: (prev.tasks?.overview || []).map(t =>
           t.id === taskId ? { ...t, done: !t.done } : t
         ),
       },
@@ -14,7 +17,7 @@ export default function OverviewTab({ data, updateData }) {
   };
 
   // Calculate budget totals (simplified)
-  const totalCommitted = data.budget
+  const totalCommitted = budget
     .filter(b => b.actual && b.actual !== '—' && b.actual !== 'TBD')
     .reduce((sum, b) => {
       const num = parseFloat(b.actual.replace(/[^0-9.]/g, ''));
@@ -56,7 +59,7 @@ export default function OverviewTab({ data, updateData }) {
       <p className="section-desc">Things to tackle in the next 4–6 weeks</p>
 
       <div className="task-list">
-        {data.tasks.overview.map(task => (
+        {tasks.map(task => (
           <Task key={task.id} task={task} onToggle={() => toggleTask(task.id)} />
         ))}
       </div>

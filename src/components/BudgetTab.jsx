@@ -1,17 +1,19 @@
 import { Alert } from './shared.jsx';
 
 export default function BudgetTab({ data, updateData }) {
+  const budget = data?.budget || [];
+
   const updateBudgetItem = (itemId, field, value) => {
     updateData(prev => ({
       ...prev,
-      budget: prev.budget.map(b =>
+      budget: (prev.budget || []).map(b =>
         b.id === itemId ? { ...b, [field]: value } : b
       ),
     }));
   };
 
   // Calculate totals
-  const totalActual = data.budget
+  const totalActual = budget
     .filter(b => b.actual && b.actual !== '—' && b.actual !== 'TBD' && b.actual !== '')
     .reduce((sum, b) => {
       const num = parseFloat(b.actual.replace(/[^0-9.]/g, ''));
@@ -34,7 +36,7 @@ export default function BudgetTab({ data, updateData }) {
           </tr>
         </thead>
         <tbody>
-          {data.budget.map(item => (
+          {budget.map(item => (
             <tr key={item.id}>
               <td className="category">{item.category}</td>
               <td className="amount-est">{item.estimated}</td>

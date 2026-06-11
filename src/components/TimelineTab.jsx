@@ -8,14 +8,16 @@ const PHASES = [
 ];
 
 export default function TimelineTab({ data, updateData }) {
+  const timeline = data?.tasks?.timeline || {};
+
   const toggleTask = (phaseKey, taskId) => {
     updateData(prev => ({
       ...prev,
       tasks: {
         ...prev.tasks,
         timeline: {
-          ...prev.tasks.timeline,
-          [phaseKey]: prev.tasks.timeline[phaseKey].map(t =>
+          ...(prev.tasks?.timeline || {}),
+          [phaseKey]: (prev.tasks?.timeline?.[phaseKey] || []).map(t =>
             t.id === taskId ? { ...t, done: !t.done } : t
           ),
         },
@@ -39,7 +41,7 @@ export default function TimelineTab({ data, updateData }) {
             <div className="phase-content">
               <div className="phase-title">{phase.title}</div>
               <div className="task-list">
-                {data.tasks.timeline[phase.key]?.map(task => (
+                {(timeline[phase.key] || []).map(task => (
                   <Task
                     key={task.id}
                     task={task}

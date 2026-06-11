@@ -13,6 +13,8 @@ export default function VenuesTab({ data, updateData }) {
   const [dragOverId, setDragOverId] = useState(null);
   const listRef = useRef(null);
 
+  const venues = data?.venues || [];
+
   const handleDragStart = (e, id) => {
     setDraggedId(id);
     e.dataTransfer.effectAllowed = 'move';
@@ -113,7 +115,7 @@ export default function VenuesTab({ data, updateData }) {
       </div>
 
       <div className="venue-list" ref={listRef}>
-        {data.venues.map((venue, idx) => (
+        {venues.map((venue, idx) => (
           <div
             key={venue.id}
             className={`venue-row ${venue.deprioritized ? 'deprioritized' : ''} ${draggedId === venue.id ? 'dragging' : ''} ${dragOverId === venue.id ? 'drag-over' : ''}`}
