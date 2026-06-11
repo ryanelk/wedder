@@ -1,0 +1,50 @@
+import { STORAGE_KEY, DEFAULT_DATA } from './defaults.js';
+
+export function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      return migrateData(data);
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveData(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      ...data,
+      savedAt: new Date().toISOString(),
+    }));
+  } catch (e) {
+    console.error('[Wedding Planner] Failed to save:', e);
+  }
+}
+
+function migrateData(data) {
+  if (!data) return null;
+
+  // Ensure all required fields exist
+  if (!data.venues) data.venues = DEFAULT_DATA.venues;
+  if (!data.tasks) data.tasks = DEFAULT_DATA.tasks;
+  if (!data.budget) data.budget = DEFAULT_DATA.budget;
+  if (!data.visions) data.visions = DEFAULT_DATA.visions;
+  if (!data.activeVisionId) data.activeVisionId = data.visions[0]?.id || 'vis1';
+  if (data.venueNotes === undefined) data.venueNotes = '';
+
+  // Migrate venues to include userNotes if missing
+  data.venues = data.venues.map(v => ({
+    ...v,
+    userNotes: v.userNotes || '',
+    deprioritized: v.deprioritized || false,
+  }));
+
+  return data;
+}
+
+export function getInitialData() {
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}

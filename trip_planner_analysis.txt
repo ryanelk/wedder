@@ -1,0 +1,52 @@
+ Here's a comprehensive breakdown of how the trip_planner project implements gist synchronization:
+
+  Gist Sync Architecture Overview
+
+  The trip_planner uses a local-first hybrid sync approach where data is always saved locally first (instant), then synced to GitHub Gist asynchronously with a 5-minute debounce.
+
+  Key Files
+
+  | File                         | Purpose
+ |
+  |------------------------------|-----------------------------------------------|
+  | src/data/gistStorage.js      | GitHub API wrapper (create, load, save gists) |
+  | src/components/GistSetup.jsx | Setup UI for connecting to GitHub
+ |
+  | src/data/tripsDb.js          | Local storage persistence layer
+ |
+  | src/App.jsx                  | Main sync orchestration
+ |
+
+  Authentication Setup
+
+  1. User creates a GitHub Personal Access Token with gist scope
+  2. User either creates a new gist or connects to an existing one via ID/URL
+  3. Credentials stored in localStorage as { token, gistId }
+
+  Core API Functions in gistStorage.js
+
+  - createGist(token, data) → POST /gists - Creates new private gist
+  - loadFromGist(token, gistId) → GET /gists/{gistId} - Fetches data
+  - saveToGist(token, gistId, data) → PATCH /gists/{gistId} - Updates data
+
+  Sync Flow
+
+  1. User edits → Save to localStorage immediately
+  2. Mark as pending → Set a flag indicating unsynced changes
+  3. Debounce timer → Wait 5 minutes of inactivity
+  4. Upload to gist → PATCH request to GitHub API
+  5. Clear pending → Show "Saved ✓" status
+
+  Conflict Resolution
+
+  When the app starts and detects unsynced local changes, it shows a dialog letting the user choose between:
+  - Keep local version (and push to gist)
+  - Load from GitHub (overwrite local)
+
+  Storage Keys Used
+
+  trip-planner-gist-credentials  → { token, gistId }
+  trip-planner-guest-mode        → boolean
+  trip-planner-pending-sync      → boolean flag
+
+  ---
