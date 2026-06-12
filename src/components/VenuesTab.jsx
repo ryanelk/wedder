@@ -277,9 +277,11 @@ export default function VenuesTab({ data, updateData }) {
                 </div>
               </div>
 
-              <div className="venue-notes">{venue.notes.split('\n').map((line, i) => (
-                <span key={i}>{line}{i < venue.notes.split('\n').length - 1 && <br />}</span>
-              ))}</div>
+              {venue.notes && (
+                <div className="venue-notes">{venue.notes.split('\n').map((line, i, arr) => (
+                  <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+                ))}</div>
+              )}
 
               {/* User Notes Section */}
               <div className="venue-user-notes">
