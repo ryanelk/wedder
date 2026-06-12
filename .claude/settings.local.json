@@ -4,7 +4,11 @@
       "Bash(gh auth status:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "Bash(git push)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "WebFetch(domain:ryanelk.github.io)"
     ]
   }
 }
