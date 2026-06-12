@@ -319,6 +319,40 @@ body {
 
 .venue-spec .spec-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 .venue-spec .spec-val { font-size: 13px; color: var(--charcoal); margin-top: 1px; }
+.venue-spec.venue-spec-full { grid-column: 1 / -1; }
+.venue-spec .spec-input,
+.venue-spec .spec-select {
+  font-size: 13px;
+  color: var(--charcoal);
+  margin-top: 1px;
+  font-family: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 2px 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.venue-spec .spec-input:hover,
+.venue-spec .spec-select:hover {
+  border-color: var(--border);
+  background: #fff;
+}
+.venue-spec .spec-input:focus,
+.venue-spec .spec-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+}
+.venue-spec .spec-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%237a7268' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
 
 .venue-status { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; display: inline-block; }
 .status-scout { background: #fde8d4; color: #8a4a2a; }

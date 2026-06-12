@@ -82,6 +82,15 @@ export default function VenuesTab({ data, updateData }) {
     updateData(prev => ({ ...prev, venueNotes: notes }));
   };
 
+  const updateVenueField = (venueId, field, value) => {
+    updateData(prev => ({
+      ...prev,
+      venues: prev.venues.map(v =>
+        v.id === venueId ? { ...v, [field]: value } : v
+      ),
+    }));
+  };
+
   return (
     <>
       <h2 className="section-heading">Venue Scouting</h2>
@@ -174,19 +183,52 @@ export default function VenuesTab({ data, updateData }) {
               <div className="venue-row-specs">
                 <div className="venue-spec">
                   <div className="spec-label">Capacity</div>
-                  <div className="spec-val">{venue.capacity}</div>
+                  <input
+                    type="text"
+                    className="spec-input"
+                    value={venue.capacity}
+                    onChange={e => updateVenueField(venue.id, 'capacity', e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                    placeholder="e.g. ~100 seated"
+                  />
                 </div>
                 <div className="venue-spec">
                   <div className="spec-label">Est. Rental</div>
-                  <div className="spec-val">{venue.estRental}</div>
+                  <input
+                    type="text"
+                    className="spec-input"
+                    value={venue.estRental}
+                    onChange={e => updateVenueField(venue.id, 'estRental', e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                    placeholder="e.g. $5–7k"
+                  />
                 </div>
                 <div className="venue-spec">
                   <div className="spec-label">Style</div>
                   <div className="spec-val">{venue.style}</div>
                 </div>
                 <div className="venue-spec">
-                  <div className="spec-label">Catering</div>
-                  <div className="spec-val">{venue.catering}</div>
+                  <div className="spec-label">Outside F&B</div>
+                  <select
+                    className="spec-select"
+                    value={venue.cateringType}
+                    onChange={e => updateVenueField(venue.id, 'cateringType', e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <option value="byo">Yes (BYO)</option>
+                    <option value="inhouse">No (In-house only)</option>
+                  </select>
+                </div>
+                <div className="venue-spec venue-spec-full">
+                  <div className="spec-label">Features</div>
+                  <input
+                    type="text"
+                    className="spec-input"
+                    value={venue.features || ''}
+                    onChange={e => updateVenueField(venue.id, 'features', e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                    placeholder="e.g. prep kitchen, bridal suite, outdoor space, no curfew..."
+                  />
                 </div>
               </div>
 
