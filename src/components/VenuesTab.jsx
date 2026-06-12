@@ -1,5 +1,43 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Alert } from './shared.jsx';
+
+// Auto-resize textarea helper
+function AutoResizeTextarea({ id, value, onChange, className, placeholder, onClick }) {
+  const textareaRef = useRef(null);
+
+  const adjustHeight = useCallback((el) => {
+    if (el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    adjustHeight(e.target);
+    onChange(e);
+  };
+
+  // Adjust on mount and when value changes
+  const setRef = useCallback((el) => {
+    textareaRef.current = el;
+    if (el) {
+      adjustHeight(el);
+    }
+  }, [adjustHeight]);
+
+  return (
+    <textarea
+      key={id}
+      ref={setRef}
+      className={className}
+      value={value}
+      onChange={handleChange}
+      placeholder={placeholder}
+      onClick={onClick}
+      rows={1}
+    />
+  );
+}
 
 const STATUS_LABELS = {
   scout: 'To Scout',
@@ -205,7 +243,14 @@ export default function VenuesTab({ data, updateData }) {
                 </div>
                 <div className="venue-spec">
                   <div className="spec-label">Style</div>
-                  <div className="spec-val">{venue.style}</div>
+                  <input
+                    type="text"
+                    className="spec-input"
+                    value={venue.style}
+                    onChange={e => updateVenueField(venue.id, 'style', e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                    placeholder="e.g. Industrial loft"
+                  />
                 </div>
                 <div className="venue-spec">
                   <div className="spec-label">Outside F&B</div>
@@ -221,9 +266,9 @@ export default function VenuesTab({ data, updateData }) {
                 </div>
                 <div className="venue-spec venue-spec-full">
                   <div className="spec-label">Features</div>
-                  <input
-                    type="text"
-                    className="spec-input"
+                  <AutoResizeTextarea
+                    id={`${venue.id}-features`}
+                    className="spec-textarea"
                     value={venue.features || ''}
                     onChange={e => updateVenueField(venue.id, 'features', e.target.value)}
                     onClick={e => e.stopPropagation()}
@@ -232,12 +277,15 @@ export default function VenuesTab({ data, updateData }) {
                 </div>
               </div>
 
-              <div className="venue-notes">{venue.notes}</div>
+              <div className="venue-notes">{venue.notes.split('\n').map((line, i) => (
+                <span key={i}>{line}{i < venue.notes.split('\n').length - 1 && <br />}</span>
+              ))}</div>
 
               {/* User Notes Section */}
               <div className="venue-user-notes">
                 <div className="venue-user-notes-label">Your Notes</div>
-                <textarea
+                <AutoResizeTextarea
+                  id={`${venue.id}-notes`}
                   className="venue-user-notes-input"
                   value={venue.userNotes || ''}
                   onChange={e => updateVenueNotes(venue.id, e.target.value)}
