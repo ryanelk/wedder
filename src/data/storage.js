@@ -36,8 +36,9 @@ export function migrateData(data) {
   if (data.venueNotes === undefined) data.venueNotes = '';
 
   // Migrate venues to include all fields if missing
-  data.venues = data.venues.map(v => ({
+  data.venues = data.venues.map((v, index) => ({
     ...v,
+    id: v.id || `v${index + 1}_${Date.now()}`,
     userNotes: v.userNotes || '',
     deprioritized: v.deprioritized || false,
     features: v.features || '',

@@ -53,9 +53,6 @@ export default function VenuesTab({ data, updateData }) {
 
   const venues = data?.venues || [];
 
-  // Debug: log venue IDs on render
-  console.log('Rendering venues with IDs:', venues.map(v => v.id));
-
   const handleDragStart = (e, id) => {
     setDraggedId(id);
     e.dataTransfer.effectAllowed = 'move';
@@ -124,16 +121,12 @@ export default function VenuesTab({ data, updateData }) {
   };
 
   const updateVenueField = (venueId, field, value) => {
-    console.log('updateVenueField called:', { venueId, field, value });
-    updateData(prev => {
-      console.log('Current venue IDs:', prev.venues.map(v => v.id));
-      return {
-        ...prev,
-        venues: prev.venues.map(v =>
-          v.id === venueId ? { ...v, [field]: value } : v
-        ),
-      };
-    });
+    updateData(prev => ({
+      ...prev,
+      venues: prev.venues.map(v =>
+        v.id === venueId ? { ...v, [field]: value } : v
+      ),
+    }));
   };
 
   return (
