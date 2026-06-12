@@ -24,22 +24,23 @@ export function saveData(data) {
   }
 }
 
-function migrateData(data) {
+export function migrateData(data) {
   if (!data) return null;
 
-  // Ensure all required fields exist
-  if (!data.venues) data.venues = DEFAULT_DATA.venues;
-  if (!data.tasks) data.tasks = DEFAULT_DATA.tasks;
-  if (!data.budget) data.budget = DEFAULT_DATA.budget;
-  if (!data.visions) data.visions = DEFAULT_DATA.visions;
+  // Ensure all required fields exist (deep clone to avoid reference issues)
+  if (!data.venues) data.venues = JSON.parse(JSON.stringify(DEFAULT_DATA.venues));
+  if (!data.tasks) data.tasks = JSON.parse(JSON.stringify(DEFAULT_DATA.tasks));
+  if (!data.budget) data.budget = JSON.parse(JSON.stringify(DEFAULT_DATA.budget));
+  if (!data.visions) data.visions = JSON.parse(JSON.stringify(DEFAULT_DATA.visions));
   if (!data.activeVisionId) data.activeVisionId = data.visions[0]?.id || 'vis1';
   if (data.venueNotes === undefined) data.venueNotes = '';
 
-  // Migrate venues to include userNotes if missing
+  // Migrate venues to include all fields if missing
   data.venues = data.venues.map(v => ({
     ...v,
     userNotes: v.userNotes || '',
     deprioritized: v.deprioritized || false,
+    features: v.features || '',
   }));
 
   return data;

@@ -222,9 +222,10 @@ export default function VenuesTab({ data, updateData }) {
                 <div className="venue-spec">
                   <div className="spec-label">Capacity</div>
                   <input
+                    key={`${venue.id}-capacity`}
                     type="text"
                     className="spec-input"
-                    value={venue.capacity}
+                    value={venue.capacity || ''}
                     onChange={e => updateVenueField(venue.id, 'capacity', e.target.value)}
                     onClick={e => e.stopPropagation()}
                     placeholder="e.g. ~100 seated"
@@ -233,9 +234,10 @@ export default function VenuesTab({ data, updateData }) {
                 <div className="venue-spec">
                   <div className="spec-label">Est. Rental</div>
                   <input
+                    key={`${venue.id}-estRental`}
                     type="text"
                     className="spec-input"
-                    value={venue.estRental}
+                    value={venue.estRental || ''}
                     onChange={e => updateVenueField(venue.id, 'estRental', e.target.value)}
                     onClick={e => e.stopPropagation()}
                     placeholder="e.g. $5–7k"
@@ -244,9 +246,10 @@ export default function VenuesTab({ data, updateData }) {
                 <div className="venue-spec">
                   <div className="spec-label">Style</div>
                   <input
+                    key={`${venue.id}-style`}
                     type="text"
                     className="spec-input"
-                    value={venue.style}
+                    value={venue.style || ''}
                     onChange={e => updateVenueField(venue.id, 'style', e.target.value)}
                     onClick={e => e.stopPropagation()}
                     placeholder="e.g. Industrial loft"
@@ -255,8 +258,9 @@ export default function VenuesTab({ data, updateData }) {
                 <div className="venue-spec">
                   <div className="spec-label">Outside F&B</div>
                   <select
+                    key={`${venue.id}-cateringType`}
                     className="spec-select"
-                    value={venue.cateringType}
+                    value={venue.cateringType || 'byo'}
                     onChange={e => updateVenueField(venue.id, 'cateringType', e.target.value)}
                     onClick={e => e.stopPropagation()}
                   >

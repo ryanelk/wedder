@@ -8,7 +8,10 @@
       "Bash(git push)",
       "Bash(npm run build:*)",
       "Bash(cat:*)",
-      "WebFetch(domain:ryanelk.github.io)"
+      "WebFetch(domain:ryanelk.github.io)",
+      "Bash(gh run list:*)",
+      "Bash(git fetch:*)",
+      "Bash(git ls-tree:*)"
     ]
   }
 }

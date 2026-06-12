@@ -6,7 +6,7 @@ import VenuesTab from './components/VenuesTab.jsx';
 import BudgetTab from './components/BudgetTab.jsx';
 import SatellitesTab from './components/SatellitesTab.jsx';
 import VisionTab from './components/VisionTab.jsx';
-import { loadData, saveData, getInitialData } from './data/storage.js';
+import { loadData, saveData, getInitialData, migrateData } from './data/storage.js';
 import {
   getCredentials, saveCredentials, clearCredentials,
   loadFromGist, saveToGist,
@@ -57,7 +57,8 @@ export default function App() {
     if (!creds) { setLoading(false); return; }
 
     loadFromGist(creds.token, creds.gistId)
-      .then(gistData => {
+      .then(rawGistData => {
+        const gistData = migrateData(rawGistData);
         if (hasPending()) {
           const local = loadData();
           if (local) {
