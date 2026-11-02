@@ -1,13 +1,9 @@
-import { STORAGE_KEY, DEFAULT_DATA } from './defaults.js';
+import { STORAGE_KEY, DEFAULT_DATA, DATA_VERSION } from './defaults.js';
 
 export function loadData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const data = JSON.parse(raw);
-      return migrateData(data);
-    }
-    return null;
+    return raw ? migrateData(JSON.parse(raw)) : null;
   } catch {
     return null;
   }
@@ -15,35 +11,21 @@ export function loadData() {
 
 export function saveData(data) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      ...data,
-      savedAt: new Date().toISOString(),
-    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...data, savedAt: new Date().toISOString() }));
   } catch (e) {
     console.error('[Wedding Planner] Failed to save:', e);
   }
 }
 
+// Data from before version 2 (the old venue shortlist, task lists and budget) is replaced with a fresh plan.
+// The gist is overwritten with the new shape on the next sync.
 export function migrateData(data) {
   if (!data) return null;
-
-  // Ensure all required fields exist (deep clone to avoid reference issues)
-  if (!data.venues) data.venues = JSON.parse(JSON.stringify(DEFAULT_DATA.venues));
-  if (!data.tasks) data.tasks = JSON.parse(JSON.stringify(DEFAULT_DATA.tasks));
-  if (!data.budget) data.budget = JSON.parse(JSON.stringify(DEFAULT_DATA.budget));
-  if (!data.visions) data.visions = JSON.parse(JSON.stringify(DEFAULT_DATA.visions));
-  if (!data.activeVisionId) data.activeVisionId = data.visions[0]?.id || 'vis1';
-  if (data.venueNotes === undefined) data.venueNotes = '';
-
-  // Migrate venues to include all fields if missing
-  data.venues = data.venues.map((v, index) => ({
-    ...v,
-    id: v.id || `v${index + 1}_${Date.now()}`,
-    userNotes: v.userNotes || '',
-    deprioritized: v.deprioritized || false,
-    features: v.features || '',
-  }));
-
+  if (data.version !== DATA_VERSION) return getInitialData();
+  const fresh = getInitialData();
+  for (const key of Object.keys(fresh)) {
+    if (data[key] === undefined) data[key] = fresh[key];
+  }
   return data;
 }
 

@@ -1,0 +1,50 @@
+/* Dark mode. The theme is set on <html data-theme="light|dark"> by index.html before first paint and by ThemeToggle after. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cream: #1b1916;
+  --warm-white: #1f1c19;
+  --charcoal: #ece5d8;
+  --muted: #a59b8d;
+  --accent: #cfae7a;
+  --accent-light: #4a3e2c;
+  --danger: #e08a72;
+  --success: #7fb08e;
+  --border: #3a342d;
+  --card-bg: #24211d;
+}
+
+/* Header and tab bar stay dark in both themes; in dark mode they sit a shade deeper than the page. */
+html[data-theme="dark"] .header,
+html[data-theme="dark"] .tabs { background: #12100e; color: #ece5d8; }
+html[data-theme="dark"] .tabs { border-top-color: #2a2622; }
+html[data-theme="dark"] .tab:hover { color: #ece5d8; }
+html[data-theme="dark"] .settings-btn { border-color: #3a342d; }
+
+/* Original styles that used fixed light colors */
+html[data-theme="dark"] .alert-warn { background: #2e2619; color: #e3c995; }
+html[data-theme="dark"] .alert-info { background: #1d2533; color: #b5c6e6; }
+html[data-theme="dark"] .setup-error { background: #3a1f1a; border-color: #6a3328; color: #f0a593; }
+html[data-theme="dark"] .modal-overlay { background: rgba(0, 0, 0, 0.6); }
+html[data-theme="dark"] .vision-textarea::placeholder,
+html[data-theme="dark"] .embed-placeholder-sub { color: #7d7468; }
+
+/* Planning tabs */
+html[data-theme="dark"] .wp {
+  color-scheme: dark;
+  --bg: #1b1916; --surface: #24211d; --surface-2: #1f1c19; --fg: #ece5d8; --muted: #a59b8d;
+  --border: #3a342d; --accent: #cfae7a; --accent-soft: #4a3e2c;
+  --ok: #7fb08e; --warn: #d9a05c; --bad: #e08a72; --info: #8fa9d6;
+  --c-venue: #d2b07a; --c-food: #8cc39d; --c-people: #c79cc7; --c-logistics: #9db0dc;
+  --c-budget: #dca478; --c-fun: #e39a9a; --c-vendor: #7fc3cc;
+}
+html[data-theme="dark"] .wp .bubble[aria-selected="true"],
+html[data-theme="dark"] .wp .bubble[aria-selected="true"] .n { color: #1b1916; }
+html[data-theme="dark"] .wp .bubble[aria-selected="true"]::before { background: #1b1916; }
+
+/* Toggle button, styled like the settings button beside it */
+.theme-btn {
+  background: none; border: 1px solid #4a4540; border-radius: 4px; padding: 4px 10px; cursor: pointer;
+  font-size: 10px; color: #9a9088; font-family: 'DM Mono', monospace; letter-spacing: 1px; transition: all 0.15s; white-space: nowrap;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+html[data-theme="dark"] .theme-btn { border-color: #3a342d; }

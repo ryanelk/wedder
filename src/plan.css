@@ -1,0 +1,288 @@
+/* Styles for the planning tabs. Everything is scoped under .wp so it doesn't touch the original app styles. */
+.wp {
+    --bg: #f5f0e8;
+    --surface: #ffffff;
+    --surface-2: #faf8f4;
+    --fg: #2a2520;
+    --muted: #776f65;
+    --border: #ddd5c4;
+    --accent: #a8864f;
+    --accent-soft: #ebdcc0;
+    --head-bg: #2a2520;
+    --head-fg: #f5f0e8;
+    --head-muted: #a49a8e;
+    --ok: #4f7f5f;
+    --warn: #b0702a;
+    --bad: #b5523b;
+    --info: #4a6a9e;
+    --c-venue: #8a6a3a;
+    --c-food: #3f7050;
+    --c-people: #7a4a7a;
+    --c-logistics: #46598a;
+    --c-budget: #9a5a2a;
+    --c-fun: #a04848;
+    --c-vendor: #2f6f78;
+    --display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+    --mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  }
+.wp button, .wp input, .wp select, .wp textarea { font: inherit; color: inherit; }
+.wp :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wp .num { font-variant-numeric: tabular-nums; }
+.wp .wp-panel { display: flex; flex-direction: column; gap: 28px; }
+.wp h2 { font-family: var(--display); font-weight: 400; font-size: 28px; line-height: 1.1; margin: 0; text-wrap: balance; }
+.wp h3 { font-family: var(--display); font-weight: 400; font-size: 20px; margin: 0; }
+.wp .desc { color: var(--muted); font-size: 11.5px; margin: 4px 0 0; max-width: 70ch; }
+.wp .eyebrow { font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.wp .block { display: flex; flex-direction: column; gap: 12px; }
+.wp .row-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.wp .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.wp .stat { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wp .stat .v { font-family: var(--display); font-size: 30px; font-weight: 300; line-height: 1; }
+.wp .stat .s { font-size: 10.5px; color: var(--muted); }
+.wp .bar { height: 5px; background: var(--accent-soft); border-radius: 3px; overflow: hidden; position: relative; }
+.wp .bar > i { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 3px; }
+.wp .bar.ok > i { background: var(--ok); }
+.wp .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.wp .note { background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--warn); padding: 12px 14px; font-size: 11.5px; min-width: 0; }
+.wp .note.info { border-left-color: var(--info); }
+.wp .note strong { display: block; font-weight: 500; margin-bottom: 3px; }
+.wp .tasks { display: flex; flex-direction: column; gap: 6px; }
+.wp .task { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--border); cursor: pointer; text-align: left; width: 100%; }
+.wp .task:hover { border-color: var(--accent); }
+.wp .task .box { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; margin-top: 1px; display: grid; place-items: center; font-size: 10px; color: transparent; }
+.wp .task.done { background: var(--surface-2); }
+.wp .task.done .box { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.wp .task .txt { flex: 1; min-width: 0; font-size: 12px; }
+.wp .task.done .txt { text-decoration: line-through; color: var(--muted); }
+.wp .task .meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.wp .due { font-size: 10px; color: var(--muted); white-space: nowrap; }
+.wp .due.late { color: var(--bad); }
+.wp .due.soon { color: var(--warn); }
+.wp .task.done .due { color: var(--muted); }
+.wp .tag { --h: var(--muted); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; color: var(--h); background: color-mix(in srgb, var(--h) 14%, transparent); white-space: nowrap; }
+.wp .tag[data-t="venue"] { --h: var(--c-venue); }
+.wp .tag[data-t="food"] { --h: var(--c-food); }
+.wp .tag[data-t="people"] { --h: var(--c-people); }
+.wp .tag[data-t="logistics"] { --h: var(--c-logistics); }
+.wp .tag[data-t="budget"] { --h: var(--c-budget); }
+.wp .tag[data-t="fun"] { --h: var(--c-fun); }
+.wp .tag[data-t="vendor"] { --h: var(--c-vendor); }
+.wp .del { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 0 2px; font-size: 13px; line-height: 1; }
+.wp .del:hover { color: var(--bad); }
+@media (max-width: 560px) {
+  .wp .task { flex-wrap: wrap; }
+  .wp .task .meta { width: 100%; justify-content: flex-start; padding-left: 26px; }
+}
+.wp .phase { display: grid; grid-template-columns: 150px 1fr; gap: 20px; }
+.wp .phase-side { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; position: relative; }
+.wp .phase-side .when { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.wp .phase-side h3 { font-size: 22px; line-height: 1.1; }
+.wp .phase-side .prog { font-size: 10.5px; color: var(--muted); }
+.wp .phase.now .phase-side .when { color: var(--accent); }
+.wp .phase.now .phase-side .when::after { content: " · now"; }
+.wp .phase-body { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; }
+.wp .wedding-day { border: 1px solid var(--accent); background: var(--surface); padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: baseline; }
+.wp .wedding-day .t { font-family: var(--display); font-size: 26px; }
+@media (max-width: 680px) {
+  .wp .phase { grid-template-columns: 1fr; gap: 8px; }
+}
+.wp .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.wp .chk { display: inline-flex; gap: 6px; align-items: center; font-size: 11px; color: var(--muted); cursor: pointer; }
+.wp .form { display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); padding: 12px; }
+.wp .form > * { min-width: 0; }
+.wp .in { background: var(--surface-2); border: 1px solid var(--border); padding: 8px 10px; font-size: 12px; outline: none; }
+.wp .in:focus { border-color: var(--accent); }
+.wp .form .grow { flex: 1 1 240px; }
+.wp .btn { background: var(--fg); color: var(--bg); border: 0; padding: 8px 16px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+.wp .btn:hover { background: var(--accent); color: var(--head-bg); }
+.wp .btn.ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+.wp .btn.ghost:hover { border-color: var(--fg); }
+.wp .pipeline { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); flex-wrap: wrap; }
+.wp .pipeline div { flex: 1 1 110px; background: var(--surface); padding: 10px 14px; }
+.wp .pipeline .v { font-family: var(--display); font-size: 24px; line-height: 1; }
+.wp .vendors { display: flex; flex-direction: column; gap: 8px; }
+.wp .vendor { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--st, var(--border)); padding: 14px 16px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 10px 20px; }
+.wp .vendor[data-status="todo"] { --st: var(--border); }
+.wp .vendor[data-status="research"] { --st: var(--info); }
+.wp .vendor[data-status="quoted"] { --st: var(--warn); }
+.wp .vendor[data-status="booked"] { --st: var(--ok); }
+.wp .vendor[data-status="skip"] { --st: var(--border); opacity: .6; }
+.wp .vendor.late { --st: var(--bad); }
+.wp .vendor .name { font-family: var(--display); font-size: 20px; line-height: 1.15; }
+.wp .vendor .vmeta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+.wp .vendor .guide { font-size: 11px; color: var(--muted); margin-top: 8px; max-width: 60ch; }
+.wp .vendor .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-content: start; }
+.wp .vendor .fields .full { grid-column: 1 / -1; }
+.wp .vendor label { display: flex; flex-direction: column; gap: 3px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); min-width: 0; }
+.wp .vendor .in { width: 100%; }
+.wp .vendor textarea.in { resize: vertical; min-height: 34px; }
+.wp .vendor label.ins { flex-direction: row; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--fg); }
+.wp .vendor label.ins span { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.wp .answered li span:last-child { color: var(--fg); }
+@media (max-width: 720px) {
+  .wp .vendor { grid-template-columns: 1fr; }
+}
+.wp .venue-hero { background: var(--surface); border: 1px solid var(--border); padding: 20px 22px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; }
+.wp .venue-hero .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; align-content: start; }
+.wp .fact .k { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.wp .fact .val { font-size: 13px; margin-top: 2px; }
+@media (max-width: 720px) {
+  .wp .venue-hero { grid-template-columns: 1fr; }
+}
+.wp .incl { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.wp .incl > div { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; min-width: 0; }
+.wp .incl ul { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
+.wp .incl li { display: flex; justify-content: space-between; gap: 10px; }
+.wp .incl li span:last-child { color: var(--muted); text-align: right; }
+.wp a { color: var(--accent); }
+.wp .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface); }
+.wp table { border-collapse: collapse; width: 100%; min-width: 600px; }
+.wp th { font-weight: 400; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.wp td { padding: 9px 14px; border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent); font-size: 12px; vertical-align: top; }
+.wp td.r, .wp th.r { text-align: right; }
+.wp td.cat { font-family: var(--display); font-size: 16px; }
+.wp tr.total td { border-top: 2px solid var(--border); border-bottom: 0; font-weight: 500; }
+.wp .band { position: relative; height: 34px; margin-top: 4px; }
+.wp .band .track { position: absolute; left: 0; right: 0; top: 14px; height: 6px; background: var(--accent-soft); border-radius: 3px; }
+.wp .band .zone { position: absolute; top: 10px; height: 14px; background: color-mix(in srgb, var(--ok) 22%, transparent); border: 1px dashed var(--ok); border-radius: 2px; }
+.wp .band .fill { position: absolute; left: 0; top: 14px; height: 6px; background: var(--accent); border-radius: 3px; }
+.wp .band .mark { position: absolute; top: 6px; width: 2px; height: 22px; background: var(--fg); }
+.wp .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 10.5px; color: var(--muted); }
+.wp .legend i { display: inline-block; width: 10px; height: 10px; vertical-align: -1px; margin-right: 5px; }
+.wp .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.wp .card { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.wp .card .when { font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+.wp .card .tasks .task { padding: 6px 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent); background: transparent; }
+.wp .card .tasks .task:last-child { border-bottom: 0; }
+.wp .spots { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.wp .spot { border: 1px solid var(--border); background: var(--surface-2); padding: 12px 14px; font-size: 11.5px; }
+.wp .spot b { font-family: var(--display); font-weight: 400; font-size: 17px; display: block; }
+.wp .spot .fit { color: var(--accent); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.wp .links { display: flex; flex-direction: column; gap: 6px; }
+.wp .link { display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); }
+.wp .link > div { flex: 1; min-width: 0; }
+.wp .link .l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wp .link .u { font-size: 10px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wp .empty { border: 1.5px dashed var(--border); padding: 22px; text-align: center; color: var(--muted); font-size: 11.5px; }
+.wp textarea.big { width: 100%; min-height: 140px; resize: vertical; line-height: 1.7; }
+@media (prefers-reduced-motion: no-preference) {
+  .wp .task, .wp .btn { transition: border-color .15s, background .15s, color .15s; }
+}
+.wp .tr-design { --h: var(--c-people); }
+.wp .tr-logistics { --h: var(--c-logistics); }
+.wp .tr-vendors { --h: var(--c-vendor); }
+.wp .tr-dayof { --h: var(--c-budget); }
+.wp .bubbles { display: flex; gap: 8px; flex-wrap: wrap; }
+.wp .bubble { display: inline-flex; gap: 8px; align-items: center; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; }
+.wp .bubble::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--h); }
+.wp .bubble .n { font-size: 10px; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.wp .bubble:hover { border-color: var(--h); }
+.wp .bubble[aria-selected="true"] { background: var(--h); border-color: var(--h); color: var(--surface); }
+.wp .bubble[aria-selected="true"]::before { background: var(--surface); }
+.wp .bubble[aria-selected="true"] .n { color: var(--surface); opacity: .85; }
+.wp .sec-head { border-left: 3px solid var(--h); padding: 4px 0 4px 14px; display: flex; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; align-items: flex-end; }
+.wp .sec-head > div { min-width: 0; }
+.wp .sec-prog { display: flex; flex-direction: column; gap: 5px; min-width: 200px; flex: 0 1 280px; font-size: 10.5px; color: var(--muted); }
+.wp .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.wp .tile { text-align: left; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--h); padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wp .tile:hover { border-color: var(--h); }
+.wp .tile .nm { font-family: var(--display); font-size: 21px; line-height: 1.1; }
+.wp .tile .ct { font-size: 10.5px; color: var(--muted); }
+.wp .tile .nx { font-size: 11px; color: var(--fg); }
+.wp .tile .nx .due { margin-left: 4px; }
+.wp .mgroup { display: grid; grid-template-columns: 120px 1fr; gap: 18px; }
+.wp .mlabel { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
+.wp .mlabel .when { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.wp .mlabel .prog { font-size: 10.5px; color: var(--muted); }
+.wp .mgroup.now .mlabel .when { color: var(--accent); }
+.wp .mgroup.now .mlabel .when::after { content: " · now"; }
+.wp .mbody { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+@media (max-width: 680px) {
+  .wp .mgroup { grid-template-columns: 1fr; gap: 6px; }
+  .wp .mlabel { flex-direction: row; gap: 10px; padding-top: 0; }
+}
+.wp .todo { background: var(--surface); border: 1px solid var(--border); }
+.wp .todo.open { border-color: var(--accent); }
+.wp .todo-row { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; }
+.wp .box { width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; display: grid; place-items: center; font-size: 10px; color: transparent; background: none; cursor: pointer; padding: 0; margin-top: 0; }
+.wp .box:hover { border-color: var(--ok); }
+.wp .todo.done .todo-row .box, .wp .step.on .box { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.wp .todo-title { flex: 1; min-width: 0; background: none; border: 0; text-align: left; padding: 0; font-size: 12px; cursor: pointer; line-height: 1.5; }
+.wp .todo-title:hover { color: var(--accent); }
+.wp .todo-title .chev { color: var(--muted); font-size: 10px; margin-left: 6px; }
+.wp .todo.done .todo-title { text-decoration: line-through; color: var(--muted); }
+.wp .todo .meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.wp .todo .due.ok { color: var(--ok); }
+@media (max-width: 560px) {
+  .wp .todo-row { flex-wrap: wrap; }
+  .wp .todo .meta { width: 100%; justify-content: flex-start; padding-left: 28px; }
+}
+.wp .todo-detail { border-top: 1px solid var(--border); padding: 12px 14px 14px 40px; display: flex; flex-direction: column; gap: 14px; background: var(--surface-2); }
+@media (max-width: 560px) {
+  .wp .todo-detail { padding-left: 14px; }
+}
+.wp .todo-detail .why { font-size: 11.5px; color: var(--muted); margin: 0; max-width: 70ch; }
+.wp .steps { display: flex; flex-direction: column; gap: 1px; }
+.wp .step-wrap { display: flex; align-items: center; gap: 6px; }
+.wp .step { display: flex; gap: 9px; align-items: flex-start; background: none; border: 0; padding: 4px 0; text-align: left; cursor: pointer; font-size: 11.5px; flex: 1; min-width: 0; }
+.wp .step .box { width: 15px; height: 15px; font-size: 9px; margin-top: 1px; }
+.wp .step.on > span:last-child { text-decoration: line-through; color: var(--muted); }
+.wp .step-add, .wp .sl-form, .wp .add-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.wp .step-add .in { flex: 1 1 200px; }
+.wp .refs { display: flex; gap: 8px; flex-wrap: wrap; }
+.wp .chip-link { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; font-size: 10.5px; cursor: pointer; color: var(--accent); }
+.wp .chip-link:hover { border-color: var(--accent); }
+.wp .notes-l { display: flex; flex-direction: column; gap: 5px; }
+.wp textarea[data-notes] { width: 100%; resize: vertical; min-height: 64px; line-height: 1.6; }
+.wp .del-text { align-self: flex-start; background: none; border: 0; color: var(--muted); font-size: 10.5px; cursor: pointer; padding: 0; text-decoration: underline; }
+.wp .del-text:hover { color: var(--bad); }
+.wp .sl { display: flex; flex-direction: column; gap: 6px; }
+.wp .sl-list { display: flex; flex-direction: column; gap: 4px; }
+.wp .sl-item { display: flex; gap: 10px; align-items: center; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); font-size: 11.5px; }
+.wp .sl-item .sl-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wp .sl-item.pick { border-color: var(--accent); }
+.wp .star { background: none; border: 0; cursor: pointer; color: var(--border); font-size: 15px; padding: 0; line-height: 1; }
+.wp .star:hover { color: var(--accent); }
+.wp .sl-item.pick .star { color: var(--accent); }
+.wp .sl-form .in { flex: 1 1 120px; min-width: 0; }
+.wp .sl-empty { font-size: 11px; color: var(--muted); }
+.wp .vendor .vshort { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 10px; }
+.wp [hidden] { display: none !important; }
+.wp .det-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.wp .edit-btn { background: none; border: 0; color: var(--muted); font-size: 10.5px; cursor: pointer; padding: 0 2px; text-decoration: underline; text-underline-offset: 2px; }
+.wp .edit-btn:hover { color: var(--accent); }
+.wp .edit { display: flex; flex-direction: column; gap: 12px; }
+.wp .fld { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wp .fld .in { width: 100%; }
+.wp .fld-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.wp .ed-steps { display: flex; flex-direction: column; gap: 5px; }
+.wp .ed-step { display: flex; gap: 6px; align-items: center; }
+.wp .ed-step .in { flex: 1; min-width: 0; }
+.wp .ed-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.wp .btn.danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+.wp .btn.danger.armed { background: var(--bad); color: var(--surface); border-color: var(--bad); }
+.wp .deleted { border: 1px dashed var(--border); padding: 10px 14px; font-size: 11.5px; }
+.wp .deleted summary { cursor: pointer; color: var(--muted); }
+.wp .deleted .row { display: flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent); }
+.wp .deleted .row:last-child { border-bottom: 0; }
+.wp .deleted .row > span:first-of-type { flex: 1; min-width: 0; }
+.wp .bin { width: 92px; padding: 5px 7px; text-align: right; font-size: 12px; }
+.wp .bin::placeholder { color: var(--muted); }
+.wp .bin.manual { border-color: var(--accent); }
+.wp .brange { display: inline-flex; gap: 4px; align-items: center; color: var(--muted); }
+.wp #p-budget table { min-width: 760px; }
+
+/* App-specific additions for the React build */
+.wp { font-family: var(--mono); color: var(--fg); line-height: 1.55; }
+.wp button, .wp input, .wp select, .wp textarea { font: inherit; color: inherit; }
+.wp :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wp .num { font-variant-numeric: tabular-nums; }
+
+.wp .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 9px 16px; font-size: 11px; z-index: 200; max-width: calc(100% - 32px); }
+.wp .bubble[aria-selected="true"], .wp .bubble[aria-selected="true"] .n { color: #fff; }
+
+/* Simplified budget table */
+.wp .budget-simple { min-width: 560px; }
+.wp .budget-simple th.c, .wp .budget-simple td.c { text-align: center; }
+.wp .budget-simple .bk { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+.wp .budget-simple tr.is-booked td.cat { color: var(--ok); }
